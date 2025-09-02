@@ -1,5 +1,5 @@
 const BASE_URL = "https://kdt-api.fe.dev-cos.com";
-const USERNAME = "team404"; // 나중에 "team_404"로 변경할 것
+const USERNAME = "team_404";
 
 function withHeaders(options = {}) {
   const base = {
