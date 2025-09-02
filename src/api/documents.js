@@ -10,14 +10,19 @@ export const getTargetContent = (docId) => http.get(`/documents/${docId}`);
 export const postNewDocument = (title, parentId = null) =>
   http.post(`/documents`, { title, parent: parentId });
 
-// 문서 초기화
-export const initializeDocumentContent = (docId) =>
-  http.put(`/documents/${docId}`, { title: "제목", content: "내용" });
+// // 문서 초기화
+// export const initializeDocumentContent = (docId) =>
+//   http.put(`/documents/${docId}`, { title: "제목", content: "내용" });
 
-// 문서 수정
-export const editContent = (docId, title, content) =>
-  http.put(`/documents/${docId}`, { title, content });
+// // 문서 수정
+// export const editContent = (docId, title, content) =>
+//   http.put(`/documents/${docId}`, { title, content });
 
-// 자동 저장
-export const AutoSave = (docId, title, content) =>
-  http.put(`/documents/${docId}`, { title, content });
+// // 자동 저장
+// export const AutoSave = (docId, title, content) =>
+//   http.put(`/documents/${docId}`, { title, content });
+
+// 문서 삭제
+export const deleteDocument = async (docId) => {
+  return http.delete(`/documents/${docId}`);
+};

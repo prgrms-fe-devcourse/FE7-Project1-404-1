@@ -1,124 +1,94 @@
-import { getTargetContent } from "../../api/documents.js";
-import { addDoc, removeAllActiveClasses } from "./handleDocFuncs.js";
+// src/components/documentManager/createDocumentItems.js
+import { addDoc } from "./handleDocFuncs.js";
+import { deleteDocument } from "../../api/documents.js";
+import { createDocumentsList } from "./createDocumentList.js";
+import { navigate } from "../router.js";
 
+/**
+ * 하나의 Document 항목 생성
+ * @param {Object} doc - 문서 데이터 {id, title, documents}
+ * @param {HTMLElement} parentElement - 부모 ul 요소
+ */
 export const createDocumentItem = async (doc, parentElement = null) => {
-  const path = `/documents/${doc.id}`;
-
-  // li 요소 생성
-  const newDocument = document.createElement("li");
-  newDocument.classList.add("sidebar__menuWrapper--document");
-  newDocument.id = `document-container-${doc.id}`;
-  newDocument.innerHTML = `
+  const li = document.createElement("li");
+  li.classList.add("sidebar__menuWrapper--document");
+  li.id = `document-container-${doc.id}`;
+  li.innerHTML = `
     <div class="document-row">
-      #
-        ${doc.title ?? "untitled"}
-      </a>
-      <button class="add-subdoc-btn" data-parent-id="${doc.id}" aria-label="하위 문서 추가">+</button>
+      <button class="delete-doc-btn" data-doc-id="${doc.id}" aria-label="문서 삭제">x</button>
+      <span>${doc.title ?? "untitled"}</span>
+      <div class="document-actions">
+        <button class="add-subdoc-btn" data-parent-id="${doc.id}" aria-label="하위 문서 추가">+</button>
+      </div>
     </div>
     <ul class="sub-document-list" style="display:none;"></ul>
   `;
 
-  // 트리에 삽입
-  if (parentElement) {
-    parentElement.appendChild(newDocument);
-  } else {
-    const documentList = document.getElementById("document-list");
-    if (documentList) documentList.appendChild(newDocument);
-    else console.error("document-list 요소를 찾을 수 없습니다.");
-  }
+  // 부모 요소에 삽입
+  if (parentElement) parentElement.appendChild(li);
+  else document.getElementById("document-list")?.appendChild(li);
 
   // 하위 문서 재귀 렌더링
-  if (doc.documents && doc.documents.length > 0) {
-    const subDocList = newDocument.querySelector(".sub-document-list");
+  if (doc.documents?.length > 0) {
+    const subList = li.querySelector(".sub-document-list");
     for (const sub of doc.documents) {
-      await createDocumentItem(sub, subDocList);
+      await createDocumentItem(sub, subList);
     }
   }
 
-  // Hover 표시
-  newDocument.addEventListener("mouseenter", () => {
-    newDocument.classList.add("hover__document-item");
-  });
-  newDocument.addEventListener("mouseleave", () => {
-    newDocument.classList.remove("hover__document-item");
-  });
+  // Hover 효과
+  li.addEventListener("mouseenter", () => li.classList.add("hover__document-item"));
+  li.addEventListener("mouseleave", () => li.classList.remove("hover__document-item"));
 
-  // 문서/항목 클릭
-  newDocument.addEventListener("click", async (event) => {
-    try {
-      const target = event.target;
-
-      // 하위 문서 영역 클릭 시: 전파 중단
-      if (target.closest(".sub-document-list")) {
-        event.stopPropagation();
-
-        // 하위 링크 클릭 처리
-        const clickedLink = target.closest(".document-link");
-        if (clickedLink) {
-          const docId = clickedLink.dataset.url.replace("doc", "");
-          navigate(`/documents/${docId}`);
-          const docData = await getTargetContent(docId);
-
-          const titleEl = document.getElementById("editor__title-input");
-          const contentEl = document.getElementById("editor__content-input");
-          if (titleEl) titleEl.value = docData?.title ?? "";
-          if (contentEl) contentEl.value = docData?.content ?? "";
-
-          if (typeof updateBreadcrumb === "function") {
-            await updateBreadcrumb(docId);
-          }
-        }
-        return;
-      }
-
-      // + 버튼 클릭 시: 전파 중단하고 하위 문서 생성
-      if (target.closest(".add-subdoc-btn")) {
-        event.stopPropagation();
-        const parentId = target.closest(".add-subdoc-btn")?.dataset?.parentId;
-        if (parentId) await addDoc(parentId);
-        return;
-      }
-
-      // 일반 문서 항목 클릭
-      event.preventDefault();
-
-      removeAllActiveClasses();
-      newDocument.classList.add("active__document-item"); // 오탈자 수정
-
-      navigate(path);
-
-      const docData = await getTargetContent(doc.id);
-      const titleEl = document.getElementById("editor__title-input");
-      const contentEl = document.getElementById("editor__content-input");
-      if (titleEl) {
-        titleEl.disabled = false;
-        titleEl.value = docData?.title ?? "";
-      }
-      if (contentEl) {
-        contentEl.disabled = false;
-        contentEl.value = docData?.content ?? "";
-      }
-
-      if (typeof updateBreadcrumb === "function") {
-        await updateBreadcrumb(doc.id);
-      }
-
-      const subList = newDocument.querySelector(".sub-document-list");
-      if (subList) {
-        subList.style.display = subList.style.display === "none" ? "block" : "none";
-      }
-    } catch (err) {
-      console.error("문서 항목 클릭 처리 중 오류:", err);
-    }
-  });
-
-  // 하위 문서 추가 버튼
-  const addButton = newDocument.querySelector(".add-subdoc-btn");
+  // + 버튼 클릭 → 하위 문서 생성
+  const addButton = li.querySelector(".add-subdoc-btn");
   if (addButton) {
     addButton.addEventListener("click", async (event) => {
       event.stopPropagation();
       const parentId = addButton.dataset.parentId;
       if (parentId) await addDoc(parentId);
+
+      // 하위 목록 보이기
+      const subList = li.querySelector(".sub-document-list");
+      if (subList && subList.style.display === "none") subList.style.display = "block";
     });
   }
+
+  // X 버튼 클릭 → 문서 삭제 + 에디터 초기화
+  const deleteButton = li.querySelector(".delete-doc-btn");
+  if (deleteButton) {
+    deleteButton.addEventListener("click", async (event) => {
+      event.stopPropagation();
+      const docId = deleteButton.dataset.docId;
+
+      try {
+        await deleteDocument(docId);
+
+        // 현재 li 요소만 제거
+        li.remove();
+
+        // 삭제된 문서가 열려있으면 홈 화면으로 초기화
+        if (location.pathname.includes(docId)) {
+          history.pushState(null, "", "/");
+          const editorMount = document.getElementById("editor-mount-point");
+          if (editorMount) {
+            editorMount.innerHTML = `
+              <div class="placeholder">
+                <p>+ 버튼을 눌러 새 페이지를 만드세요.</p>
+              </div>
+            `;
+          }
+        }
+      } catch (err) {
+        console.error("문서 삭제 실패:", err);
+      }
+    });
+  }
+
+  // 문서 클릭 → 에디터 열기
+  li.addEventListener("click", (event) => {
+    if (event.target.closest(".add-subdoc-btn") || event.target.closest(".delete-doc-btn")) return;
+    if (event.detail === 2) return; // 더블클릭 무시
+    navigate(`/documents/${doc.id}`);
+  });
 };

@@ -1,23 +1,20 @@
+// src/components/documentManager/createDocumentList.js
 import { getRootDocuments } from "../../api/documents.js";
 import { createDocumentItem } from "./createDocumentItems.js";
 
 export const createDocumentsList = async () => {
-  const documentList = document.getElementById("document-list");
-  if (!documentList) {
-    console.error("document-list 요소를 찾을 수 없습니다.");
-    return;
-  }
+  const list = document.getElementById("document-list");
+  if (!list) return;
 
-  // 누적 방지: 초기화
-  documentList.innerHTML = "";
+  // 기존 DOM 초기화 → 이벤트 중복 방지
+  list.innerHTML = "";
 
   try {
-    // Root 문서 가져오기 (API 래퍼 사용)
-    const docsJSON = await getRootDocuments();
-    for (const doc of docsJSON) {
-      await createDocumentItem(doc, documentList);
+    const docs = await getRootDocuments(); // 여기만 바뀜
+    for (const doc of docs) {
+      await createDocumentItem(doc, list);
     }
-  } catch (error) {
-    console.error("문서 목록 가져오기 실패:", error);
+  } catch (err) {
+    console.error("문서 목록 가져오기 실패:", err);
   }
 };
