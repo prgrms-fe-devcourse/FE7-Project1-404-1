@@ -1,3 +1,5 @@
+import { debounce } from "../utils/debounce.js";
+
 export function initEditor({ mount }) {
   if (!mount) throw new Error("에디터에 마운트할 DOM 요소가 필요합니다.");
 
@@ -18,18 +20,28 @@ export function initEditor({ mount }) {
   contentTextarea.className = "editor__content";
   contentTextarea.placeholder = "내용을 입력하세요";
 
+  // 디바운스 컨텐츠 상태
+  const status = document.createElement("span");
+  status.className = "editor__status";
+
+  const saveDebounced = debounce(() => {
+    console.log("저장됨");
+    status.textContent = "저장 완료";
+  }, 1000);
+
   // 이벤트 연결
   titleInput.addEventListener("input", () => {
     state.title = titleInput.value;
-    // console.log("제목: ", state.title);
+    status.textContent = "저장중...";
+    saveDebounced();
   });
   contentTextarea.addEventListener("input", () => {
     state.content = contentTextarea.value;
-    // console.log("내용: ", state.content);
+    status.textContent = "저장중...";
+    saveDebounced();
   });
 
   // DOM 연결 파트
-  editorContainer.appendChild(titleInput);
-  editorContainer.appendChild(contentTextarea);
+  editorContainer.append(titleInput, contentTextarea, status);
   mount.appendChild(editorContainer);
 }
