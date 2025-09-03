@@ -1,14 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Notion</title>
-  </head>
-  <body>
-    <div id="app">
-      <aside id="sidebar"></aside>
-      <main id="editor"></main>
-    </div>
-    <script type="module" src="./src/main.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notion Clone</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- 사이드바 -->
+    <aside class="sidebar">
+      <header class="sidebar-header">
+        <span class="logo">Notion</span>
+      </header>
+      <nav class="sidebar-nav">
+        <ul id="document-list" class="document-list"></ul>
+      </nav>
+      <button id="add-root-doc-btn" class="add-root-doc-btn">+ 새 페이지</button>
+    </aside>
+
+    <!-- 에디터 영역 -->
+    <main class="editor-container">
+      <div id="editor-mount-point">
+        <div class="placeholder">
+          <p>+ 버튼을 눌러 새 페이지를 만드세요.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="../components/sidebar.js"></script>
+</body>
 </html>
