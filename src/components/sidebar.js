@@ -1,38 +1,11 @@
 import { getRootDocuments } from "../api/documentAPI.js";
 import { createDocumentItem } from "./documentManager.js";
 import { initEditor } from "./editor.js";
-// 각 문서 - 아이디(숫자)/제목(문자열)/자식목록(배열)
-function renderDocuments(docs) {
-  let html = `<ul>`;
 
-  for (const doc of docs) {
-    html += `<li data-id="${doc.id}">${doc.title}<button id="add">+</button><button id="del">🗑️</button></li>`;
-
-    if (doc.documents.length > 0) {
-      html += renderDocuments(doc.documents);
-    }
-  }
-  html += `</ul>`;
-  return html;
-}
-
-export async function render() {
-  const docs = await getRootDocuments();
-  const list = document.querySelector("body");
-  list.innerHTML = renderDocuments(docs);
-
-  document.querySelector("#sidebar").addEventListener("click", (e) => {
-    if (e.target.tagName === "LI" || e.target.closest("li")) {
-      const li = e.target.tagName === "LI" ? e.target : e.target.closest("li");
-      const docId = li.dataset.id;
-      navigate(`/documents/${docId}`);
-    }
-  });
-}
-
-export function navigate(path) {
-  history.pushState(null, null, path);
-  route();
+// === [라우팅 로직] ===
+function handleRoute() {
+  const path = window.location.pathname;
+  return path.split("/").pop();
 }
 
 export function route() {
@@ -43,11 +16,33 @@ export function route() {
   }
 }
 
-function handleRoute() {
-  const path = window.location.pathname;
-  return path.split("/").pop();
+export function navigate(path) {
+  history.pushState(null, null, path);
+  route();
 }
 
-window.addEventListener("popstate", handleRoute);
+// === [문서 목록 생성] ===
+export const createRootDocumentsList = async () => {
+  const list = document.getElementById("document-list");
+  if (!list) return;
+  list.innerHTML = "";
 
-render();
+  try {
+    const docs = await getRootDocuments();
+    for (const doc of docs) {
+      await createDocumentItem(doc, list);
+    }
+  } catch (err) {
+    console.error("문서 목록 가져오기 실패:", err);
+  }
+};
+
+// === [렌더링 함수] ===
+export async function render() {
+  await createRootDocumentsList();
+  route();
+}
+
+// === [이벤트 바인딩] ===
+window.addEventListener("DOMContentLoaded", render);
+window.addEventListener("popstate", route);
