@@ -1,4 +1,4 @@
-import { getRootDocuments } from "../api/documents.js";
+import { getRootDocuments } from "../api/documentAPI.js";
 import { createDocumentItem } from "./documentManager.js";
 import { initEditor } from "./editor.js";
 
