@@ -162,6 +162,14 @@ export const createDocumentItem = async (doc, parentElement = null) => {
   }
 };
 
+// sidebar document title 실시간 수정
+export const updateDocumentTitle = (docId, title) => {
+  const titleEl = document.querySelector(`#document-container-${docId} .document-title`);
+  if (titleEl) {
+    titleEl.textContent = title;
+  }
+};
+
 // 이벤트 위임으로 클릭 처리해서 하위 문서 조회시 중복 이벤트 방지
 
 document.addEventListener("DOMContentLoaded", () => {
