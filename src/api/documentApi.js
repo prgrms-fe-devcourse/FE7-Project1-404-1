@@ -1,7 +1,14 @@
 import { http } from "./https.js";
-
-export const getRootDocuments = () => http.get("/documents");
+// Root 문서 가져오기
+export const getRootDocuments = () => http.get(`/documents`);
+// 특정 문서 조회
 export const getDocument = (id) => http.get(`/documents/${id}`);
-export const createDocument = (data) => http.post(`/documents`, data);
+// 새 문서 생성
+export const postNewDocument = (title, parentId = null) =>
+  http.post(`/documents`, { title, parent: parentId });
+// 문서 업데이트
 export const updateDocument = (id, data) => http.put(`/documents/${id}`, data);
-export const deleteDocument = (id) => http.delete(`/documents/${id}`);
+// 문서 삭제
+export const deleteDocument = async (docId) => {
+  return http.delete(`/documents/${docId}`);
+};
