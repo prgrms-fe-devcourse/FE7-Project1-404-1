@@ -10,18 +10,16 @@
 </head>
 <body>
   <div class="app-container">
-    <!-- 사이드바 -->
     <aside class="sidebar">
       <header class="sidebar-header">
         <span class="logo">Notion Clone</span>
+        <button id="add-root-doc-btn" class="add-root-doc-btn">+</button>
       </header>
       <nav class="sidebar-nav">
         <ul id="document-list" class="document-list"></ul>
       </nav>
-      <button id="add-root-doc-btn" class="add-root-doc-btn">+ 새 페이지</button>
-    </aside>
+      </aside>
 
-    <!-- 에디터 영역 -->
     <main class="editor-container">
       <div id="editor-mount-point">
         <div class="placeholder">
@@ -31,8 +29,6 @@
     </main>
   </div>
 
-  <!-- sidebar 모듈 불러오기 -->
   <script type="module" src="./src/components/sidebar.js"></script>
 </body>
 </html>
-
