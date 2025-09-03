@@ -49,6 +49,23 @@ export const createRootDocumentsList = async () => {
   }
 };
 
+// === [자동 새로고침 관리] ===
+let refreshIntervalId = null;
+
+export function startAutoRefresh(interval = 5000) {
+  if (refreshIntervalId) return; // 중복 실행 방지
+  refreshIntervalId = setInterval(async () => {
+    await refreshDocumentList();
+  }, interval);
+}
+
+export function stopAutoRefresh() {
+  if (refreshIntervalId) {
+    clearInterval(refreshIntervalId);
+    refreshIntervalId = null;
+  }
+}
+
 // === [이벤트 리스너 등록 및 초기화] ===
 window.addEventListener("DOMContentLoaded", async () => {
   // 사이드바 렌더링 및 SPA 라우팅 초기화
@@ -63,9 +80,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     });
     addRootBtn.dataset.listenerAdded = "true";
   }
-  setInterval(async () => {
-    await refreshDocumentList();
-  }, 5000);
+
+  // 자동 새로고침 시작
+  startAutoRefresh(5000);
 });
+
 // 브라우저 뒤로가기/앞으로가기
 window.addEventListener("popstate", route);
