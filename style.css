@@ -24,13 +24,14 @@ body {
    사이드바
 ============================== */
 .sidebar {
+    position: relative; /* 버튼 절대 위치 기준 */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     width: 280px;
     background-color: var(--sidebar-bg);
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
 }
 
 .sidebar-header {
@@ -81,8 +82,10 @@ body {
 
 /* + 새 페이지 버튼 - 사이드바 하단 고정 */
 .add-root-doc-btn {
-    margin-top: auto; /* 남은 공간을 밀어서 맨 아래 */
-    width: 100%;
+    position: absolute;
+    bottom: 20px; /* 사이드바 하단에서 20px 떨어짐 */
+    left: 20px;   /* 좌측 여백 */
+    right: 20px;  /* 우측 여백 */
     padding: 10px;
     border: none;
     background-color: #f5f5f5;
