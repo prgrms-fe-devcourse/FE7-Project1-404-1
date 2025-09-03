@@ -37,6 +37,7 @@ export const createRootDocumentsList = async () => {
   }
 };
 
+// === [렌더링 함수] ===
 export async function render() {
   await createRootDocumentsList();
   route();
