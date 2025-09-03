@@ -4,7 +4,7 @@ import { http } from "./https.js";
 export const getRootDocuments = () => http.get(`/documents`);
 
 // 특정 문서 조회
-export const getTargetContent = (docId) => http.get(`/documents/${docId}`);
+export const getDocument = (id) => http.get(`/documents/${id}`);
 
 // 새 문서 생성
 export const postNewDocument = (title, parentId = null) => http.post(`/documents`, { title, parent: parentId });
