@@ -1,4 +1,4 @@
-import { addRootDoc, createDocumentItem } from "./documentManager.js";
+import { addRootDoc, createDocumentItem, refreshDocumentList } from "./documentManager.js";
 import { getRootDocuments } from "../api/documentAPI.js";
 import { initEditor } from "./editor.js";
 
@@ -63,7 +63,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     });
     addRootBtn.dataset.listenerAdded = "true";
   }
+  setInterval(async () => {
+    await refreshDocumentList();
+  }, 1000);
 });
-
 // 브라우저 뒤로가기/앞으로가기
 window.addEventListener("popstate", route);
