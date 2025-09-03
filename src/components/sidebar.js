@@ -1,25 +1,37 @@
+import { addRootDoc, createDocumentItem } from "./documentManager.js";
 import { getRootDocuments } from "../api/documentAPI.js";
-import { createDocumentItem } from "./documentManager.js";
 import { initEditor } from "./editor.js";
 
 // === [라우팅 로직] ===
-function handleRoute() {
-  const path = window.location.pathname;
-  return path.split("/").pop();
-}
-
 export function route() {
-  const mountPoint = document.querySelector("#editor");
-  const id = handleRoute();
-  if (id) {
-    initEditor({ mount: mountPoint, docId: id });
+  const mountPoint = document.getElementById("editor-mount-point");
+  // 에디터 마운트 지점 초기화
+  mountPoint.innerHTML = "";
+
+  const { pathname } = window.location;
+
+  if (pathname === "/") {
+    // 루트 URL일 경우 플레이스홀더 표시
+    mountPoint.innerHTML = `<div class="placeholder">
+      <p>+ 버튼을 눌러 새 페이지를 만드세요.</p>
+    </div>`;
+    return;
+  }
+
+  const documentMatch = pathname.match(/^\/documents\/(.+)$/);
+  if (documentMatch) {
+    const documentId = documentMatch[1];
+    initEditor({ mount: mountPoint, docId: documentId });
+    return;
   }
 }
 
+// === [SPA 네비게이션] ===
 export function navigate(path) {
-  history.pushState(null, null, path);
+  history.pushState(null, "", path);
   route();
 }
+window.navigate = navigate;
 
 // === [문서 목록 생성] ===
 export const createRootDocumentsList = async () => {
@@ -37,12 +49,21 @@ export const createRootDocumentsList = async () => {
   }
 };
 
-// === [렌더링 함수] ===
-export async function render() {
+// === [이벤트 리스너 등록 및 초기화] ===
+window.addEventListener("DOMContentLoaded", async () => {
+  // 사이드바 렌더링 및 SPA 라우팅 초기화
   await createRootDocumentsList();
   route();
-}
 
-// === [이벤트 바인딩] ===
-window.addEventListener("DOMContentLoaded", render);
+  // + 새 페이지 버튼 (중복 방지)
+  const addRootBtn = document.getElementById("add-root-doc-btn");
+  if (addRootBtn && !addRootBtn.dataset.listenerAdded) {
+    addRootBtn.addEventListener("click", async () => {
+      await addRootDoc(); // 생성 후 navigate 포함
+    });
+    addRootBtn.dataset.listenerAdded = "true";
+  }
+});
+
+// 브라우저 뒤로가기/앞으로가기
 window.addEventListener("popstate", route);
