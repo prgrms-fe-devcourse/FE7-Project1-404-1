@@ -1,183 +1,160 @@
-/* ==============================
-    기본 색상
-============================== */
 :root {
-    --bg-color: #f7f6f3;
-    --sidebar-bg: #fff;
-    --hover-color: #f0f0f0;
-    --text-color: #333;
-    --placeholder-color: #a1a1a1;
-    --active-color: #e0e0e0;
+  --bg-color: #f7f6f3;
+  --sidebar-bg: #fff;
+  --hover-color: #f0f0f0;
+  --text-color: #333;
+  --placeholder-color: #a1a1a1;
+  --active-color: #e0e0e0;
 }
 
----
-
-/* ==============================
-    html, body - 화면 전체 고정
-============================== */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
----
-
-/* ==============================
-    전체 앱 레이아웃
-============================== */
 .app-container {
-    display: flex;
-    height: 100%;
+  display: flex;
+  height: 100%;
 }
 
----
-
-/* ==============================
-    사이드바
-============================== */
 .sidebar {
-    width: 280px;
-    height: 100%;
-    background-color: var(--sidebar-bg);
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+  width: 280px;
+  height: 100%;
+  background-color: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
 }
 
 .logo {
-    font-weight: bold;
-    font-size: 1.2rem;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .document-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1;
-    overflow-y: auto; /* 문서 목록에 스크롤 적용 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .sidebar__menuWrapper--document {
-    padding: 8px 0;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  padding: 8px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .document-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
 }
 
 .document-row:hover,
 .hover__document-item {
-    background-color: var(--hover-color);
+  background-color: var(--hover-color);
 }
 
 .active__document-item {
-    background-color: var(--active-color);
+  background-color: var(--active-color);
 }
 
 .sub-document-list {
-    list-style: none;
-    padding-left: 20px;
+  list-style: none;
+  padding-left: 20px;
 }
 
-/* + 새 페이지 버튼 */
 .add-root-doc-btn {
-    padding: 5px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: var(--placeholder-color);
-    border-radius: 4px;
-    transition: background-color 0.2s;
-    line-height: 1;
+  padding: 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--placeholder-color);
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  line-height: 1;
 }
 
 .add-root-doc-btn:hover {
-    background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }
 
-/* + 버튼과 X 버튼 공용 스타일 */
 .add-subdoc-btn,
 .delete-doc-btn {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: var(--placeholder-color);
-    padding: 0;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--placeholder-color);
+  padding: 0;
 }
 
 .delete-doc-btn {
-    order: -1;
-    margin-right: 10px;
+  order: -1;
+  margin-right: 10px;
 }
 
 .add-subdoc-btn {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
----
-
-/* ==============================
-    에디터 영역
-============================== */
 .editor-container {
-    flex-grow: 1;
-    height: 100%;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto; /* 에디터에 스크롤 적용 */
+  flex-grow: 1;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
 #editor-mount-point {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .placeholder {
-    text-align: center;
-    color: var(--placeholder-color);
-    margin-top: 50px;
+  text-align: center;
+  color: var(--placeholder-color);
+  margin-top: 50px;
 }
 
 .editor__title,
 .editor__content {
-    width: 100%;
-    border: none;
-    background: none;
-    padding: 10px 0;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    color: var(--text-color);
-    outline: none;
-    resize: none;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  outline: none;
+  resize: none;
 }
 
 .editor__title {
-    font-weight: bold;
-    font-size: 2.5rem;
+  font-weight: bold;
+  font-size: 2.5rem;
 }
 
 .editor__content {
-    font-size: 1.2rem;
-    min-height: 500px;
+  font-size: 1.2rem;
+  min-height: 500px;
 }

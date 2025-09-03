@@ -1,34 +1,33 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notion Clone</title>
-  <base href="/FE7-Project1-404-1/">
-
-  <link rel="stylesheet" href="./style.css">
-</head>
-<body>
-  <div class="app-container">
-    <aside class="sidebar">
-      <header class="sidebar-header">
-        <span class="logo">Notion Clone</span>
-        <button id="add-root-doc-btn" class="add-root-doc-btn">+</button>
-      </header>
-      <nav class="sidebar-nav">
-        <ul id="document-list" class="document-list"></ul>
-      </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notion Clone</title>
+    <base href="/FE7-Project1-404-1/" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <aside class="sidebar">
+        <header class="sidebar-header">
+          <span class="logo">Notion Clone</span>
+          <button id="add-root-doc-btn" class="add-root-doc-btn">+</button>
+        </header>
+        <nav class="sidebar-nav">
+          <ul id="document-list" class="document-list"></ul>
+        </nav>
       </aside>
 
-    <main class="editor-container">
-      <div id="editor-mount-point">
-        <div class="placeholder">
-          <p>+ 버튼을 눌러 새 페이지를 만드세요.</p>
+      <main class="editor-container">
+        <div id="editor-mount-point">
+          <div id="editor-placeholder" class="placeholder">
+            <p>+ 버튼을 눌러 새 페이지를 만드세요.</p>
+          </div>
         </div>
-      </div>
-    </main>
-  </div>
+      </main>
+    </div>
 
-  <script type="module" src="./src/components/sidebar.js"></script>
-</body>
+    <script type="module" src="./src/components/sidebar.js"></script>
+  </body>
 </html>
