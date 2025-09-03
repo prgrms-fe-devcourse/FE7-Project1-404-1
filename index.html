@@ -13,12 +13,14 @@
     <!-- 사이드바 -->
     <aside class="sidebar">
       <header class="sidebar-header">
-        <span class="logo">Notion</span>
+        <div class="logo-wrapper">
+          <span class="logo">Notion</span>
+          <button id="add-root-doc-btn" class="add-root-doc-btn">＋</button>
+        </div>
       </header>
       <nav class="sidebar-nav">
         <ul id="document-list" class="document-list"></ul>
       </nav>
-      <button id="add-root-doc-btn" class="add-root-doc-btn">+ 새 페이지</button>
     </aside>
 
     <!-- 에디터 영역 -->
@@ -35,3 +37,4 @@
   <script type="module" src="./src/components/sidebar.js"></script>
 </body>
 </html>
+
