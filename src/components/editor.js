@@ -1,5 +1,6 @@
 import { debounce } from "../utils/debounce.js";
 import { getDocument, updateDocument } from "../api/documentAPI.js";
+import { updateDocumentTitle } from "./documentManager.js"; 
 
 export async function initEditor({ mount, docId }) {
   if (!mount) throw new Error("에디터에 마운트할 DOM 요소가 필요합니다.");
@@ -39,6 +40,7 @@ export async function initEditor({ mount, docId }) {
   titleInput.addEventListener("input", () => {
     state.title = titleInput.value;
     status.textContent = "저장중...";
+    updateDocumentTitle(docId, state.title); // sidebar title도 실시간 수정
     saveDebounced();
   });
   contentTextarea.addEventListener("input", () => {
