@@ -10,7 +10,7 @@ export async function initEditor({ mount, docId }) {
   const editorContainer = document.createElement("div");
   editorContainer.className = "editor";
 
-  // 제목 입려창
+  // 제목 입력창
   const titleInput = document.createElement("input");
   titleInput.className = "editor__title";
   titleInput.type = "text";
