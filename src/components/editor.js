@@ -1,5 +1,5 @@
 import { debounce } from "../utils/debounce.js";
-import { getDocument, updateDocument } from "../api/documentApi.js";
+import { getDocument, updateDocument } from "../api/documentAPI.js";
 
 export async function initEditor({ mount, docId }) {
   if (!mount) throw new Error("에디터에 마운트할 DOM 요소가 필요합니다.");
