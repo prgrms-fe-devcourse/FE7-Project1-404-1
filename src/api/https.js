@@ -1,5 +1,5 @@
 const BASE_URL = "https://kdt-api.fe.dev-cos.com";
-const USERNAME = "team404"; // 테스트용 USERNAME 으로 변경
+const USERNAME = "team_404";
 
 function withHeaders(options = {}) {
   const base = {
