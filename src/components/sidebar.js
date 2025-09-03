@@ -1,5 +1,5 @@
-import { getRootDocuments } from "../api/documents.js";
-import { createDocumentItem } from "./documentManager/createDocumentItems.js";
+import { getRootDocuments } from "../api/documentAPI.js";
+import { createDocumentItem } from "./documentManager.js";
 import { initEditor } from "./editor.js";
 // 각 문서 - 아이디(숫자)/제목(문자열)/자식목록(배열)
 function renderDocuments(docs) {
